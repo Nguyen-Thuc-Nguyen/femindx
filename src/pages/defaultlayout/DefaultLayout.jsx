@@ -1,21 +1,18 @@
-import { Layout } from "antd";
+import { Layout } from 'antd';
+import SideBar from '../../components/sidebar/SideBar';
+import { Outlet } from 'react-router-dom';
 
+const { Content } = Layout;
 
 export default function DefaultLayout() {
     return (
-        <Layout style={{ overflowX: 'hidden' }}>
-                <SideBar collapsed={collapsed} />
-                <Layout style={{ maxHeight: '100vh', overflowY: 'auto' }}>
-                    <Layout
-                        style={{
-                            backgroundColor: '#F7F7F7',
-                            overflowX: 'hidden',
-                        }}
-                    >
-                        <Outlet />
-                        <Footer />
-                    </Layout>
-                </Layout>
+        <Layout style={{ height: '100vh', width: '100vw', overflowX: 'hidden' }}>
+            <SideBar />
+            <Layout style={{ maxHeight: '100vh', overflowY: 'auto',backgroundColor:'#F3F4FF' }}>
+                <Content style={{ padding: '20px' }}>
+                    <Outlet />
+                </Content>
             </Layout>
-    )
+        </Layout>
+    );
 }

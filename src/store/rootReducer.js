@@ -1,5 +1,6 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux'
+import adminSlice from './features/adminSlice'
 
-const rootReducer = combineReducers({})
+const rootReducer = combineReducers({ adminSlice })
 
 export default rootReducer

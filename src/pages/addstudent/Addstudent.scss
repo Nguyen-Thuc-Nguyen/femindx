@@ -1,0 +1,18 @@
+.personal_detail {
+    position: relative;
+    display: flex;
+    background-color: white;
+    border-radius: 12px;
+
+    .heading {
+        padding: '5px 20px'
+
+    }
+
+    .custom-card .ant-card-head {
+        background-color: #4d44b5;
+        /* Your desired title background color */
+        color: white;
+        /* Optional: change the text color */
+    }
+}

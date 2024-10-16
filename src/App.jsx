@@ -4,7 +4,6 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { router } from './routes/Router.jsx'
 import { persistor, store } from './store/store'
 
-import 'react-toastify/dist/ReactToastify.css'
 import './App.css'
 
 function App() {
