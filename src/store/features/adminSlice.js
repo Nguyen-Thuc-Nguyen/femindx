@@ -84,18 +84,18 @@ const adminSlice = createSlice({
                 state.error = action.payload
             })
             .addCase(UpdateStudent.fulfilled, (state, action) => {
-                state.loading = false
+                state.loading = false;
                 const index = state.students.findIndex(
-                    (student) => student.id === action.payload.id,
-                )
+                    (student) => student._id === action.payload._id
+                );
                 if (index !== -1) {
-                    state.students[index] = action.payload
+                    state.students[index] = action.payload;
                 }
             })
             .addCase(UpdateStudent.rejected, (state, action) => {
-                state.loading = false
-                state.error = action.payload
-            })
+                state.loading = false;
+                state.error = action.payload;
+            });
     },
 })
 

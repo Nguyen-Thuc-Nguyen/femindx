@@ -94,20 +94,20 @@ export const fetchStudentProfile = createAsyncThunk(
 
 export const UpdateStudent = createAsyncThunk(
     'students/updateStudent',
-    async (studentData, { rejectWithValue }) => {
+    async ({ studentData }, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.put(
-                `/admin/update-student/${studentData.studentData._id}`,
-                studentData.studentData,
-            )
-            console.log(response.data.data)
-            return response.data.data
+                `/admin/update-student/${studentData._id}`,
+                studentData
+            );
+            console.log('Updated student data:', response.data.data);
+            return response.data.data;
         } catch (error) {
-            console.error('Update Student Profile Error:', error)
+            console.error('Update Student Profile Error:', error);
             return rejectWithValue(
                 error.response?.data?.message ||
-                    'An unexpected error occurred while updating the student profile',
-            )
+                    'An unexpected error occurred while updating the student profile'
+            );
         }
-    },
-)
+    }
+);

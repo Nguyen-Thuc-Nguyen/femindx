@@ -1,11 +1,11 @@
-import { createBrowserRouter } from 'react-router-dom'
-import DefaultLayout from '../pages/defaultlayout/DefaultLayout'
-import Login from '../pages/login/Login'
-import Dashboard from '../pages/dashboard/Dashboard'
-import AddStudent from '../pages/addstudent/Addstudent'
-import NotFound from '../pages/notfound/Notfound'
+import { createHashRouter } from 'react-router-dom';
+import DefaultLayout from '../pages/defaultlayout/DefaultLayout';
+import Login from '../pages/login/Login';
+import Dashboard from '../pages/dashboard/Dashboard';
+import AddStudent from '../pages/addstudent/Addstudent';
+import NotFound from '../pages/notfound/Notfound';
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
     {
         path: '/',
         element: <Login />,
@@ -29,4 +29,8 @@ export const router = createBrowserRouter([
             },
         ],
     },
-])
+    {
+        path: '*',
+        element: <NotFound />,
+    }
+]);
