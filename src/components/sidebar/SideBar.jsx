@@ -35,7 +35,7 @@ export default function SideBar() {
             key: '2',
             icon: <UserOutlined />,
             label: 'Student',
-            path: '/default/addnewstudent',
+            path: '/default/student',
         },
         {
             key: '3',
@@ -46,8 +46,8 @@ export default function SideBar() {
         {
             key: '4',
             icon: <FontAwesomeIcon icon={faCalendarDays} />,
-            label: 'Event',
-            path: '/default/event',
+            label: 'Class',
+            path: '/default/class',
         },
         {
             key: '5',

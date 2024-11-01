@@ -11,7 +11,6 @@ import {
     Modal,
     Descriptions,
     Popover,
-    Card,
 } from 'antd'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -29,16 +28,14 @@ import {
     ExclamationCircleOutlined,
     EyeOutlined,
 } from '@ant-design/icons'
-import { width } from '@fortawesome/free-solid-svg-icons/fa0'
-import Title from 'antd/es/skeleton/Title'
 
 export default function AddStudent() {
     const [loading, setLoading] = useState(false)
     const [form] = Form.useForm()
     const dispatch = useDispatch()
     const error = useSelector((state) => state.admin?.error || null)
-    const studentFromRedux = useSelector((state) => state.admin.students);
-    const [students, setStudents] = useState(studentFromRedux);
+    const studentFromRedux = useSelector((state) => state.admin.students)
+    const [students, setStudents] = useState(studentFromRedux)
     const [student, setStudent] = useState({})
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [isStudentDetailVisible, setIsStudentDetailVisible] = useState(false)
@@ -96,33 +93,36 @@ export default function AddStudent() {
     }
 
     const onFinishUpdate = async (values) => {
-        setLoading(true);
+        setLoading(true)
         try {
             const updatedStudent = await dispatch(
-                UpdateStudent({ studentData: values })
-            ).unwrap();
-            
+                UpdateStudent({ studentData: values }),
+            ).unwrap()
+
             setStudents((prevStudents) =>
                 prevStudents.map((student) =>
-                    student._id === updatedStudent._id ? updatedStudent : student
-                )
-            );
-            
-            message.success('Student updated successfully!');
-            handleUpdateModalCancel();
+                    student._id === updatedStudent._id
+                        ? updatedStudent
+                        : student,
+                ),
+            )
+
+            message.success('Student updated successfully!')
+            handleUpdateModalCancel()
         } catch (error) {
             message.error(
-                error.message || 'An error occurred while updating the student.'
-            );
+                error.message ||
+                    'An error occurred while updating the student.',
+            )
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    };
-    
+    }
+
     const onFinish = async (values) => {
         setLoading(true)
         try {
-            await dispatch(addStudent(values))        
+            await dispatch(addStudent(values))
             message.success('Student added successfully!')
             form.resetFields()
             handleCancel()
@@ -142,8 +142,8 @@ export default function AddStudent() {
     }, [dispatch])
 
     useEffect(() => {
-        setStudents(studentFromRedux);
-    }, [studentFromRedux]);
+        setStudents(studentFromRedux)
+    }, [studentFromRedux])
 
     const columns = [
         {
@@ -231,7 +231,7 @@ export default function AddStudent() {
             className="add-student-container"
             style={{ minHeight: '100vh', width: '100%' }}
         >
-            <Col span={16} offset={1}>
+            <Col span={22} offset={1}>
                 <Typography.Title level={2} className="title">
                     Student Management
                 </Typography.Title>
@@ -248,6 +248,8 @@ export default function AddStudent() {
                     dataSource={students}
                     loading={loading}
                     rowKey="studentId"
+                    pagination={{ pageSize: 8 }}
+                    
                 />
                 <Modal
                     title={`Student Details: ${student?.firstName} ${student?.lastName}`}
