@@ -1,18 +1,66 @@
-.personal_detail {
-    position: relative;
-    display: flex;
-    background-color: white;
-    border-radius: 12px;
+.add-student-container {
+    background-color: #f5f5f5; // Light background for contrast
+    padding: 20px; // Add padding for spacing
 
-    .heading {
-        padding: '5px 20px'
-
+    .title {
+        color: #4d44b5; // Primary theme color
+        margin-bottom: 20px; // Space below title
     }
 
-    .custom-card .ant-card-head {
-        background-color: #4d44b5;
-        /* Your desired title background color */
-        color: white;
-        /* Optional: change the text color */
+    .create-student-button {
+        margin-bottom: 20px; // Space below button
+        border-radius: 5px; // Slightly rounded corners
+        transition: background-color 0.3s ease; // Smooth hover transition
+
+        &:hover {
+            background-color: #3c3b92; // Darker shade on hover
+        }
+    }
+
+    .add-student-modal {
+        .ant-modal-title {
+            color: #4d44b5; // Title color
+        }
+
+        .ant-divider {
+            margin: 10px 0; // Space above and below dividers
+            background-color: #4d44b5; // Divider color matching theme
+        }
+
+        // Form items styling
+        .ant-form-item {
+            margin-bottom: 16px; // Space below form items
+        }
+
+        .ant-input {
+            border-radius: 4px; // Rounded inputs
+            border: 1px solid #d9d9d9; // Light border color
+
+            &:focus {
+                border-color: #4d44b5; // Border color on focus
+            }
+        }
+
+        .error-message {
+            color: red; // Error message color
+            font-size: 12px; // Smaller font size for error messages
+            margin-top: 8px; // Space above error messages
+        }
+    }
+}
+
+// Table styling
+.ant-table {
+    margin-top: 20px; // Space above table
+    border-radius: 8px; // Rounded corners for the table
+
+    .ant-table-thead > tr > th {
+        background-color: #4d44b5; // Header background color
+        color: white; // Header text color
+        font-weight: bold; // Bold header text
+    }
+
+    .ant-table-tbody > tr:hover {
+        background-color: #e6f7ff; // Highlight row on hover
     }
 }

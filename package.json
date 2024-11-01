@@ -24,6 +24,7 @@
     "@reduxjs/toolkit": "^2.2.7",
     "akademic": "file:",
     "antd": "^5.21.1",
+    "axios": "^1.7.7",
     "formik": "^2.4.6",
     "prettier": "^3.3.3",
     "react": "^18.3.1",

@@ -2,25 +2,26 @@ import { createBrowserRouter } from 'react-router-dom'
 import DefaultLayout from '../pages/defaultlayout/DefaultLayout'
 import Login from '../pages/login/Login'
 import Dashboard from '../pages/dashboard/Dashboard'
-import Addstudent from '../pages/addstudent/Addstudent'
+import AddStudent from '../pages/addstudent/Addstudent'
 import NotFound from '../pages/notfound/Notfound'
 
 export const router = createBrowserRouter([
     {
-        path: '/login',
+        path: '/',
         element: <Login />,
     },
     {
-        path: '/',
+        path: '/default',
         element: <DefaultLayout />,
         children: [
             {
+                index: true,
                 path: '',
                 element: <Dashboard />,
             },
             {
                 path: 'addnewstudent',
-                element: <Addstudent />,
+                element: <AddStudent />,
             },
             {
                 path: '*',

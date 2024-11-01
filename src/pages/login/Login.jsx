@@ -1,21 +1,47 @@
-import { Form, Input, Button, Row, Col, Typography, Layout } from 'antd'
+import {
+    Form,
+    Input,
+    Button,
+    Row,
+    Col,
+    Typography,
+    Layout,
+    message,
+    Spin,
+} from 'antd'
 import 'antd/dist/reset.css'
 import './Login.scss'
 import akademicLogo from '../../assets/A.png'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginAdmin } from '../../store/action/adminAction'
 
 const { Title } = Typography
 
 export default function Login() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { loading = false, error } = useSelector((state) => state.admin || {})
+
     const onFinish = (values) => {
-        navigate('/default')
-        console.log('Success:', values)
+        dispatch(loginAdmin(values))
+            .then((response) => {
+                if (response.meta.requestStatus === 'fulfilled') {
+                    message.success('Login successful!')
+                    navigate('/default')
+                }
+            })
+            .catch((error) => {
+                message.error(
+                    error.message || 'Login failed. Please try again.',
+                )
+            })
     }
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo)
     }
+
     return (
         <Layout>
             <div className="login-container">
@@ -56,11 +82,6 @@ export default function Login() {
                                             required: true,
                                             message: 'Please input your email!',
                                         },
-                                        {
-                                            type: 'email',
-                                            message:
-                                                'Please enter a valid email!',
-                                        },
                                     ]}
                                 >
                                     <Input placeholder="Enter your email" />
@@ -85,10 +106,16 @@ export default function Login() {
                                         type="primary"
                                         htmlType="submit"
                                         block
+                                        disabled={loading}
                                     >
-                                        Log in
+                                        {loading ? <Spin /> : 'Log in'}
                                     </Button>
                                 </Form.Item>
+                                {error && (
+                                    <p className="error-message">
+                                        {error.message}
+                                    </p>
+                                )}
                             </Form>
                         </div>
                     </Col>

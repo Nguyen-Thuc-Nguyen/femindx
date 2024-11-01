@@ -1,11 +1,11 @@
-import { HomeOutlined, UserOutlined } from '@ant-design/icons';
-import { ConfigProvider, Menu, Typography } from 'antd';
-import Sider from 'antd/es/layout/Sider';
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import akademicLogo from '../../assets/A.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './Sidebar.scss';
+import { HomeOutlined, UserOutlined } from '@ant-design/icons'
+import { ConfigProvider, Menu, Typography } from 'antd'
+import Sider from 'antd/es/layout/Sider'
+import { useState, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import akademicLogo from '../../assets/A.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import './Sidebar.scss'
 import {
     faBowlFood,
     faCalendarDays,
@@ -15,86 +15,88 @@ import {
     faComment,
     faHeart,
     faUser,
-} from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/free-solid-svg-icons'
 
-const { Text } = Typography;
+const { Text } = Typography
 
 export default function SideBar() {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const [selectedKey, setSelectedKey] = useState('1');
+    const navigate = useNavigate()
+    const location = useLocation()
+    const [selectedKey, setSelectedKey] = useState('1')
 
     const items = [
         {
             key: '1',
             icon: <HomeOutlined />,
             label: 'Dashboard',
-            path: '/',
+            path: '/default',
         },
         {
             key: '2',
             icon: <UserOutlined />,
             label: 'Student',
-            path: '/addnewstudent',
+            path: '/default/addnewstudent',
         },
         {
             key: '3',
             icon: <FontAwesomeIcon icon={faChalkboardUser} />,
             label: 'Teacher',
-            path: '/teacher',
+            path: '/default/teacher',
         },
         {
             key: '4',
             icon: <FontAwesomeIcon icon={faCalendarDays} />,
             label: 'Event',
-            path: '/event',
+            path: '/default/event',
         },
         {
             key: '5',
             icon: <FontAwesomeIcon icon={faCoins} />,
             label: 'Finance',
-            path: '/finance',
+            path: '/default/finance',
         },
         {
             key: '6',
             icon: <FontAwesomeIcon icon={faBowlFood} />,
             label: 'Food',
-            path: '/food',
+            path: '/default/food',
         },
         {
             key: '7',
             icon: <FontAwesomeIcon icon={faUser} />,
             label: 'User',
-            path: '/user',
+            path: '/default/user',
         },
         {
             key: '8',
             icon: <FontAwesomeIcon icon={faComment} />,
             label: 'Chat',
-            path: '/chat',
+            path: '/default/chat',
         },
         {
             key: '9',
             icon: <FontAwesomeIcon icon={faChartLine} />,
             label: 'Latest Activities',
-            path: '/activities',
+            path: '/default/activities',
         },
-    ];
+    ]
 
     useEffect(() => {
-        const currentItem = items.find(item => item.path === location.pathname);
+        const currentItem = items.find(
+            (item) => item.path === location.pathname,
+        )
         if (currentItem) {
-            setSelectedKey(currentItem.key);
+            setSelectedKey(currentItem.key)
         }
-    }, [location.pathname]);
+    }, [location.pathname])
 
     const handleMenuClick = (e) => {
-        setSelectedKey(e.key);
-        const item = items.find((item) => item.key === e.key);
+        setSelectedKey(e.key)
+        const item = items.find((item) => item.key === e.key)
         if (item && item.path && item.path !== window.location.pathname) {
-            navigate(item.path);
+            navigate(item.path)
         }
-    };
+    }
 
     return (
         <Sider trigger={null} width={300} className="slide-bar-container">
@@ -153,5 +155,5 @@ export default function SideBar() {
                 </Text>
             </div>
         </Sider>
-    );
+    )
 }
