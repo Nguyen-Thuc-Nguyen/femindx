@@ -1,56 +1,103 @@
-import React from 'react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  Cell,
-} from 'recharts';
+import { useEffect, useState } from 'react';
+
 import { Card, Row, Col } from 'antd';
-
-const data = [
-  { name: 'Class A', students: 24 },
-  { name: 'Class B', students: 30 },
-  { name: 'Class C', students: 18 },
-];
-
-// Sample statistics data
-const totalStudents = 72; // This would typically come from your API
-const totalClasses = 3; // Example value
-const totalTeachers = 5; // Example value
-
-// Sample enrollment trend data
-const enrollmentData = [
-  { month: 'January', enrollments: 30 },
-  { month: 'February', enrollments: 40 },
-  { month: 'March', enrollments: 50 },
-  { month: 'April', enrollments: 60 },
-];
-
-// Sample class distribution data
-const classDistributionData = [
-  { name: 'Class A', value: 40 },
-  { name: 'Class B', value: 30 },
-  { name: 'Class C', value: 30 },
-];
+import axiosInstance from '../../config/axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip as BarTooltip } from 'recharts';
+import { LineChart, Line, XAxis as LineXAxis, YAxis as LineYAxis, Tooltip as LineTooltip } from 'recharts'
+import { fetchClasses } from '../../store/action/adminAction';
 
 export default function Dashboard() {
+  const dispatch = useDispatch()
+  const [totalStudent, setTotalStudent] = useState();
+  const [totalClass, setTotalClass] = useState();
+  const [totalTeachers, setTotalTeachers] = useState();
+  const classFromRedux = useSelector((state) => state.admin.classes) || [];
+  const [classes, setClasses] = useState(classFromRedux);
+
+
+  const classDistributionData = classes.map(classItem => ({
+    className: classItem.className,
+    studentCount: classItem.students.length,
+  }));
+  const pieData = classDistributionData.map(classData => ({
+    name: classData.className,
+    value: classData.studentCount,
+  }));
+
+  const barData = classDistributionData.map(classData => ({
+    name: classData.className,
+    students: classData.studentCount,
+  }));
+
+  console.log(pieData)
+
+  useEffect(() => {
+    setClasses(classFromRedux);
+  }, [classFromRedux])
+
+
+
+
+
+
+  useEffect(() => {
+    const fetchTotalTeachers = async () => {
+      try {
+        const response = await axiosInstance.get('/admin/total-teachers')
+        setTotalTeachers(response.data.totalTeachers);
+      } catch (error) {
+        console.error("Error fetching total teachers:", error);
+      }
+    };
+
+    fetchTotalTeachers();
+  }, []);
+
+  useEffect(() => {
+    const fetchTotalStudents = async () => {
+      try {
+        const response = await axiosInstance.get('/admin/total-students')
+        setTotalStudent(response.data.totalStudents);
+      } catch (error) {
+        console.error("Error fetching total students:", error);
+      }
+    };
+
+    fetchTotalStudents();
+  }, []);
+
+
+  useEffect(() => {
+    const fetchTotalClasses = async () => {
+      try {
+        const response = await axiosInstance.get('/admin/total-classes')
+        setTotalClass(response.data.totalClasses);
+      } catch (error) {
+        console.error("Error fetching total students:", error);
+      }
+    };
+
+    fetchTotalClasses();
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchClasses())
+  }, [dispatch])
+
+
   return (
     <div style={{ padding: '24px', background: '#fff' }}>
       <Row gutter={16} style={{ marginBottom: '24px' }}>
         <Col span={8}>
           <Card title="Total Students" bordered={false}>
-            <h2>{totalStudents}</h2>
+            <h2>{totalStudent}</h2>
           </Card>
         </Col>
         <Col span={8}>
           <Card title="Total Classes" bordered={false}>
-            <h2>{totalClasses}</h2>
+            <h2>{totalClass}</h2>
           </Card>
         </Col>
         <Col span={8}>
@@ -62,48 +109,37 @@ export default function Dashboard() {
 
       <h3>Charts Overview</h3>
       <Row gutter={16}>
-        <Col span={12}>
-          <h4>Enrollment Trends</h4>
-          <LineChart width={600} height={300} data={enrollmentData}>
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="enrollments" stroke="#8884d8" />
-          </LineChart>
-        </Col>
-        <Col span={12}>
+
+        <Col span={24}>
           <h4>Class Distribution</h4>
           <PieChart width={600} height={300}>
             <Pie
-              data={classDistributionData}
+              data={pieData}
               dataKey="value"
               nameKey="name"
               outerRadius={100}
               fill="#8884d8"
               label
             >
-              {classDistributionData.map((entry, index) => (
+              {pieData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={['#8884d8', '#82ca9d', '#ffc658'][index % 3]} />
               ))}
             </Pie>
             <Tooltip />
           </PieChart>
         </Col>
-      </Row>
-
-      <Row gutter={16} style={{ marginTop: '40px' }}>
-        <Col span={12}>
+        <Col span={24}>
           <h4>Bar Chart</h4>
-          <BarChart width={600} height={300} data={data}>
+          <BarChart width={600} height={300} data={barData}>
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip />
             <Bar dataKey="students" fill="#82ca9d" />
+            <BarTooltip />
           </BarChart>
         </Col>
-        <Col span={12}>
+        <Col span={24}>
           <h4>Line Chart</h4>
-          <LineChart width={600} height={300} data={data}>
+          <LineChart width={600} height={300} data={barData}>
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />

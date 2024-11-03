@@ -23,20 +23,21 @@ export default function Login() {
     const dispatch = useDispatch()
     const { loading = false, error } = useSelector((state) => state.admin || {})
 
-    const onFinish = (values) => {
-        dispatch(loginAdmin(values))
-            .then((response) => {
-                if (response.meta.requestStatus === 'fulfilled') {
-                    message.success('Login successful!')
-                    navigate('/default')
-                }
-            })
-            .catch((error) => {
-                message.error(
-                    error.message || 'Login failed. Please try again.',
-                )
-            })
-    }
+    const onFinish = async (values) => {
+        try {
+            const response = await dispatch(loginAdmin(values)).unwrap();
+            if (response) {
+                message.success('Login successful!');
+                
+                localStorage.setItem('token', response.token); 
+                navigate('/default');
+            }
+        } catch (error) {
+            message.error(
+                error.message || 'Login failed. Please try again.',
+            );
+        }
+    };
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo)

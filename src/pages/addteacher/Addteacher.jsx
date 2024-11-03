@@ -13,7 +13,7 @@ export default function Addteacher() {
     const teacherFromRedux = useSelector((state) => state.admin.teachers)
     const error = useSelector((state) => state.admin?.error || null)
     const [teachers, setTeachers] = useState(teacherFromRedux)
-    
+
     const [loading, setLoading] = useState(false)
     const [form] = Form.useForm()
     const [isModalVisible, setIsModalVisible] = useState(false)
@@ -34,20 +34,20 @@ export default function Addteacher() {
 
     const handleDelete = async (teacherId) => {
         try {
-            console.log(teachers)
+            console.log(teachers);
             const resultAction = await dispatch(deleteTeacher(teacherId));
             if (deleteTeacher.fulfilled.match(resultAction)) {
+                setTeachers((prevTeachers) => prevTeachers.filter(teacher => teacher.id !== teacherId));
                 message.success('Teacher deleted successfully.');
             } else {
                 message.error(resultAction.payload);
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
             message.error('An error occurred while trying to delete the teacher.');
         }
     };
 
- 
 
 
 
@@ -160,7 +160,7 @@ export default function Addteacher() {
 
                 return (
                     <>
-                      
+
                         <Popover
                             content={deleteContent}
                             title="Confirm Delete"
@@ -173,7 +173,7 @@ export default function Addteacher() {
                                 danger
                             />
                         </Popover>
-                       
+
                     </>
                 )
             },

@@ -1,11 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
+    addClass,
     addStudent,
     addTeacher,
+    deleteClass,
     deleteStudent,
     deleteTeacher,
+    fetchClasses,
     fetchStudentProfile,
     fetchStudents,
+    fetchTeacherProfile,
     fetchTeachers,
     loginAdmin,
     UpdateStudent,
@@ -19,6 +23,7 @@ const initialState = {
     token: null,
     selectStudent: {},
     teachers: [],
+    classes: [],
 };
 
 const adminSlice = createSlice({
@@ -31,6 +36,7 @@ const adminSlice = createSlice({
             state.students = [];
             state.error = null;
             state.teachers = [];
+            state.classes = [];
         },
     },
     extraReducers: (builder) => {
@@ -120,7 +126,22 @@ const adminSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-           
+            .addCase(fetchTeacherProfile.fulfilled, (state, action) => {
+                state.loading = false;
+                state.teacherProfile = action.payload;
+            })
+            .addCase(fetchClasses.fulfilled, (state, action) => {
+                state.classes = action.payload;
+                state.error = null;
+            })
+            .addCase(addClass.fulfilled, (state, action) => {
+                state.loading = false;
+                state.classes.push(action.payload);
+            })
+            .addCase(deleteClass.fulfilled, (state, action) => {
+                state.loading = false;
+                state.classes = state.classes.filter(cls => cls._id !== action.payload._id);
+            });
     },
 });
 

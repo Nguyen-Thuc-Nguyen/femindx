@@ -153,12 +153,25 @@ export const addTeacher = createAsyncThunk(
     },
 )
 
+export const fetchTeacherProfile = createAsyncThunk(
+    'admin/fetchTeacherProfile',
+    async (teacherId, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get(`/admin/teacher-profile/${teacherId}`);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+
 export const deleteTeacher = createAsyncThunk(
     'teachers/deleteTeacher',
     async (teacherId, { rejectWithValue }) => {
         try {
             console.log(`Attempting to delete teacher with ID: ${teacherId}`);
-            const response = await axiosInstance.delete(`/admin/teachers/${teacherId}`);
+            const response = await axiosInstance.delete(`/admin/delete-teacher/${teacherId}`);
             console.log("Response from delete:", response);
             return response.data.data;
         } catch (error) {
@@ -167,4 +180,61 @@ export const deleteTeacher = createAsyncThunk(
             return rejectWithValue(message);
         }
     },
+);
+
+//////////////////////////////////////////////////////////
+
+export const fetchClasses = createAsyncThunk(
+    'classes/fetchClasses',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get('/admin/all-classes')
+            return response.data.data
+        } catch (error) {
+            console.error('Fetch Students Error:', error)
+            return rejectWithValue(
+                error.response?.data?.message ||
+                'An unexpected error occurred while fetching classes',
+            )
+        }
+    },
+)
+
+export const addClass = createAsyncThunk(
+    'classes/addClass',
+    async ({ className, teacher }, { rejectWithValue }) => {
+        try {
+            console.log({ className, teacher });
+            const response = await axiosInstance.post('/admin/add-class', {
+                className,
+                teacher
+            });
+            return response.data.data;
+        } catch (error) {
+            console.error('Fetch Classes Error:', error.response ? error.response.data : error);
+            return rejectWithValue(
+                error.response?.data?.message ||
+                'An unexpected error occurred while adding the class',
+            );
+        }
+    },
+);
+export const deleteClass = createAsyncThunk(
+    'classes/deleteClass',
+    async (classId, { rejectWithValue }) => {
+        try {
+            console.log(`Attempting to delete class with ID: ${classId}`);
+            const response = await axiosInstance.delete(`/admin/delete-class`, {
+                data: { classId },
+            });
+            console.log("Response from delete:", response);
+            return response.data;
+        } catch (error) {
+            console.error('Delete Classes Error:', error.response ? error.response.data : error);
+            return rejectWithValue(
+                error.response?.data?.message ||
+                'An unexpected error occurred while deleting the class'
+            );
+        }
+    }
 );

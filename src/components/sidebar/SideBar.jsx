@@ -1,28 +1,32 @@
-import { HomeOutlined, UserOutlined } from '@ant-design/icons'
-import { ConfigProvider, Menu, Typography } from 'antd'
-import Sider from 'antd/es/layout/Sider'
-import { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import akademicLogo from '../../assets/A.png'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import './Sidebar.scss'
+import { HomeOutlined, UserOutlined } from '@ant-design/icons';
+import { ConfigProvider, Menu, Typography } from 'antd';
+import Sider from 'antd/es/layout/Sider';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import akademicLogo from '../../assets/A.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './Sidebar.scss';
 import {
-    faBowlFood,
     faCalendarDays,
     faChalkboardUser,
-    faChartLine,
-    faCoins,
-    faComment,
     faHeart,
-    faUser,
-} from '@fortawesome/free-solid-svg-icons'
+    faRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons';
+import { useDispatch } from 'react-redux';
+import { logoutAdmin } from '../../store/features/adminSlice';
 
-const { Text } = Typography
+const { Text } = Typography;
 
 export default function SideBar() {
-    const navigate = useNavigate()
-    const location = useLocation()
-    const [selectedKey, setSelectedKey] = useState('1')
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [selectedKey, setSelectedKey] = useState('1');
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(logoutAdmin());
+        navigate('/'); 
+    };
 
     const items = [
         {
@@ -50,53 +54,33 @@ export default function SideBar() {
             path: '/default/class',
         },
         {
-            key: '5',
-            icon: <FontAwesomeIcon icon={faCoins} />,
-            label: 'Finance',
-            path: '/default/finance',
+            key: '5', 
+            icon: <FontAwesomeIcon icon={faRightFromBracket} />,
+            label: 'Logout',
+            path: '',
         },
-        {
-            key: '6',
-            icon: <FontAwesomeIcon icon={faBowlFood} />,
-            label: 'Food',
-            path: '/default/food',
-        },
-        {
-            key: '7',
-            icon: <FontAwesomeIcon icon={faUser} />,
-            label: 'User',
-            path: '/default/user',
-        },
-        {
-            key: '8',
-            icon: <FontAwesomeIcon icon={faComment} />,
-            label: 'Chat',
-            path: '/default/chat',
-        },
-        {
-            key: '9',
-            icon: <FontAwesomeIcon icon={faChartLine} />,
-            label: 'Latest Activities',
-            path: '/default/activities',
-        },
-    ]
+    ];
 
     useEffect(() => {
         const currentItem = items.find(
             (item) => item.path === location.pathname,
-        )
+        );
         if (currentItem) {
-            setSelectedKey(currentItem.key)
+            setSelectedKey(currentItem.key);
         }
-    }, [location.pathname])
+    }, [location.pathname]);
 
     const handleMenuClick = (e) => {
-        setSelectedKey(e.key)
-        const item = items.find((item) => item.key === e.key)
-        if (item && item.path && item.path !== window.location.pathname) {
-            navigate(item.path)
+        if (e.key === '5') { // Handle logout
+            handleLogout();
+            return;
         }
-    }
+        setSelectedKey(e.key);
+        const item = items.find((item) => item.key === e.key);
+        if (item && item.path && item.path !== window.location.pathname) {
+            navigate(item.path);
+        }
+    };
 
     return (
         <Sider trigger={null} width={300} className="slide-bar-container">
@@ -155,5 +139,5 @@ export default function SideBar() {
                 </Text>
             </div>
         </Sider>
-    )
+    );
 }
